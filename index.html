@@ -450,6 +450,7 @@
 
   <script>
     // Cards
+    const WAITLIST_ENDPOINT = "https://script.google.com/macros/s/AKfycby-NYAfjdlZDKJW_nPqxCGjGZjX7RJifM9BjuAGl38ZaZSQNfuG_8_yn9T-YGjXYb22/exec"; // Google Apps Script Web App (/exec)
     const STORAGE_KEY = "ubpyt_cards_v2";
 
     // Private stats + waitlist (still local-only; not shown in UI)
@@ -554,6 +555,37 @@
         waitOk.style.display = "none";
         return;
       }
+
+      // Optional: keep a local copy so you can still debug signups even if network fails
+      const list = getWaitlist();
+      list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
+      setWaitlist(list.slice(0, 2000));
+
+      // Send to Google Sheet via Apps Script Web App
+      // Use text/plain to avoid CORS preflight on static sites
+      const payload = {
+        email,
+        context: pendingWaitContext,
+        ts: new Date().toISOString(),
+        page: window.location.href
+      };
+
+      waitWarn.style.display = "none";
+      waitOk.style.display = "none";
+
+      fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      })
+      .then(() => {
+        waitOk.style.display = "block";
+      })
+      .catch(() => {
+        waitWarn.textContent = "Saved locally, but we couldn’t reach the server. Please try again.";
+        waitWarn.style.display = "block";
+      });
+    }
       const list = getWaitlist();
       list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
       setWaitlist(list.slice(0, 2000));
