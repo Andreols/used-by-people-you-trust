@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Used by People You Trust</title>
+  <meta name="description" content="Discover skincare products people you trust actually use. No ads. No PR. No hype." />
+
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --card:#11131a;
+      --muted:#a7afc0;
+      --text:#eef2ff;
+      --line:#22263a;
+      --accent:#7c5cff;
+      --accent2:#1ee3cf;
+      --danger:#ff5c7a;
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 900px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 700px at 90% 10%, rgba(30,227,207,.18), transparent 55%),
+                  var(--bg);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 70px}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 0 22px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(124,92,255,.25);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background: rgba(17,19,26,.6);
+      backdrop-filter: blur(8px);
+      font-size:14px;
+    }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+      margin-top:10px;
+    }
+    @media (max-width: 860px){
+      .hero{grid-template-columns: 1fr; }
+    }
+    .heroCard{
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.72);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding:22px;
+      overflow:hidden;
+      position:relative;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(30,227,207,.22), transparent 60%);
+      filter: blur(24px);
+      opacity:.55;
+      z-index:0;
+    }
+    .heroCard > *{position:relative; z-index:1;}
+    h1{
+      margin:0 0 10px;
+      font-size:44px;
+      line-height:1.06;
+      letter-spacing:-.9px;
+    }
+    @media (max-width: 520px){ h1{font-size:36px} }
+    .sub{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:16px;
+      max-width: 58ch;
+    }
+    .ctaRow{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      margin-top: 16px;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.85);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius: 14px;
+      font-weight:650;
+      cursor:pointer;
+      transition: transform .06s ease, border-color .2s ease, background .2s ease;
+    }
+    .btn:hover{border-color: rgba(124,92,255,.6); background: rgba(17,19,26,.95);}
+    .btn:active{transform: translateY(1px);}
+    .btn.primary{
+      border: none;
+      background: linear-gradient(135deg, var(--accent), #5a8cff);
+      box-shadow: 0 14px 30px rgba(124,92,255,.25);
+    }
+    .btn.primary:hover{filter: brightness(1.05);}
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;
+    }
+    .tag{
+      font-size:13px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      padding:8px 10px;
+      border-radius: 999px;
+    }
+    .side{display:grid; gap:12px;}
+    .rules{
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.6);
+      border-radius: var(--radius2);
+      padding:18px;
+    }
+    .rules h3{margin:0 0 10px; font-size:16px;}
+    .rules ul{margin:0; padding-left:18px; color:var(--muted); font-size:14px;}
+    .rules li{margin:7px 0;}
+    .sectionTitle{
+      margin:26px 0 10px;
+      font-size:18px;
+      letter-spacing:-.2px;
+    }
+
+    /* Chooser section */
+    .chooser{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin:22px 0 10px;
+    }
+    @media (max-width: 700px){
+      .chooser{grid-template-columns: 1fr;}
+    }
+    .choice{
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.6);
+      border-radius: var(--radius2);
+      padding:18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
+    }
+    .choice h3{margin:0 0 6px; font-size:16px; letter-spacing:-.2px;}
+    .choice p{margin:0 0 12px; color:var(--muted); font-size:14px;}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns: 1fr 1fr;}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: 1fr;}
+    }
+    .card{
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.72);
+      border-radius: var(--radius2);
+      padding:16px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height: 260px;
+    }
+    .cardTop{display:flex; gap:12px; align-items:center;}
+    .ph{
+      width:58px; height:58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(30,227,207,.16));
+      border:1px dashed rgba(167,175,192,.25);
+      display:grid; place-items:center;
+      color: rgba(238,242,255,.65);
+      font-weight: 800;
+      user-select:none;
+    }
+    .who{display:flex; flex-direction:column; gap:2px;}
+    .who strong{font-size:15px;}
+    .who span{color:var(--muted); font-size:13px;}
+    .prod{display:flex; flex-direction:column; gap:6px;}
+    .prod .name{font-weight:750; letter-spacing:-.2px;}
+    .prod .quote{color:var(--text); opacity:.92; font-size:14px;}
+    .muted{color:var(--muted); font-size:13px;}
+    .cardActions{
+      margin-top:auto;
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .linkBtn{
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      cursor:pointer;
+      font-weight:650;
+    }
+    .linkBtn:hover{border-color: rgba(30,227,207,.45);}
+    .ghost{color:var(--muted); border-color: rgba(167,175,192,.22);}
+
+    .footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid rgba(34,38,58,.6);
+      padding-top: 14px;
+    }
+
+    /* Modal */
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.6);
+      display:none;
+      align-items:center; justify-content:center;
+      padding:18px;
+      z-index: 50;
+    }
+    .modal{
+      width:min(620px, 100%);
+      border-radius: 22px;
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.95);
+      box-shadow: 0 18px 60px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
+    .modalHeader{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:14px 16px;
+      border-bottom: 1px solid rgba(34,38,58,.75);
+    }
+    .modalHeader strong{font-size:15px;}
+    .closeX{
+      background: transparent; border:1px solid rgba(34,38,58,.9);
+      color: var(--muted);
+      border-radius: 12px;
+      padding:8px 10px;
+      cursor:pointer;
+    }
+    .closeX:hover{border-color: rgba(124,92,255,.6); color: var(--text);}
+    .modalBody{padding:16px;}
+    .formGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 700px){
+      .formGrid{grid-template-columns: 1fr;}
+    }
+    label{display:block; font-size:13px; color: var(--muted); margin: 0 0 6px;}
+    input, textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(34,38,58,.9);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus, textarea:focus{border-color: rgba(124,92,255,.65);}
+    textarea{min-height:96px; resize: vertical;}
+    .modalFooter{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px; flex-wrap:wrap;
+      padding:14px 16px;
+      border-top: 1px solid rgba(34,38,58,.75);
+    }
+    .note{color: var(--muted); font-size: 13px; max-width: 60ch;}
+    .warn{color: var(--danger);}
+    .success{color: rgba(30,227,207,.95);}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>Used by People You Trust</div>
+      </div>
+      <div class="pill" title="MVP mode">
+        <span>🧪</span>
+        <span>MVP — no ads, no PR, no hype</span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="heroCard">
+        <h1>A place to discover skincare people actually use.</h1>
+        <p class="sub">
+          Real recommendations from real people. No brand scripts, no paid reviews.
+          Each person shares <strong>max 3 products</strong> they genuinely use.
+        </p>
+
+        <div class="ctaRow">
+          <button class="btn primary" id="openFormBtn">Share a product</button>
+          <span class="pill">Only first name or nickname</span>
+        </div>
+
+        <div class="mini">
+          <span class="tag">No abbreviations</span>
+          <span class="tag">No PR packages</span>
+          <span class="tag">Max three products per person</span>
+        </div>
+      </div>
+
+      <div class="side">
+        <div class="rules">
+          <h3>What this is</h3>
+          <ul>
+            <li>People recommending what they <em>actually</em> use.</li>
+            <li>Simple, short quotes — no reviews, no routines.</li>
+            <li>Buying links can go to any retailer (Amazon, pharmacies, brand site).</li>
+          </ul>
+        </div>
+
+        <div class="rules">
+          <h3>What this isn’t</h3>
+          <ul>
+            <li>Not medical advice.</li>
+            <li>Not influencer content.</li>
+            <li>Not a full routine builder.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chooser section (waitlist capture only) -->
+    <div class="chooser">
+      <div class="choice">
+        <h3>Just here to discover products?</h3>
+        <p>
+          This is only a test. If you want access to the real product-discovery version,
+          join the waiting list.
+        </p>
+        <button class="btn" id="discoverBtn">Hear new products</button>
+      </div>
+
+      <div class="choice">
+        <h3>Want to share what really works for you?</h3>
+        <p>
+          This is only a test. If you want access to the real version where you can share your experience,
+          join the waiting list.
+        </p>
+        <button class="btn primary" id="shareWaitBtn">Share a product</button>
+      </div>
+    </div>
+
+    <div class="sectionTitle">What people use</div>
+    <div class="grid" id="cardsGrid"></div>
+
+    <div class="footer">
+      <div><strong>Disclaimer:</strong> This is a small test. Recommendations are personal experiences, not medical advice.</div>
+    </div>
+  </div>
+
+  <!-- Waitlist Modal (email only) -->
+  <div class="modalBackdrop" id="waitBackdrop" role="dialog" aria-modal="true" aria-labelledby="waitTitle">
+    <div class="modal">
+      <div class="modalHeader">
+        <strong id="waitTitle">Join the waiting list</strong>
+        <button class="closeX" id="closeWaitBtn">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="note" style="margin-bottom:12px;">
+          This is only a test. If you want access to the real site, leave your contact email and we’ll reach out.
+        </div>
+        <label for="waitEmail">Email</label>
+        <input id="waitEmail" type="email" placeholder="you@example.com" />
+        <div class="warn" id="waitWarn" style="display:none; margin-top:10px;">Please enter a valid email.</div>
+        <div class="success" id="waitOk" style="display:none; margin-top:10px;">Saved — thank you.</div>
+      </div>
+      <div class="modalFooter">
+        <div class="note" id="waitContext"></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn ghost" id="skipWaitBtn">Skip</button>
+          <button class="btn primary" id="saveWaitBtn">Join</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Product Modal -->
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modalHeader">
+        <strong id="modalTitle">Share a product</strong>
+        <button class="closeX" id="closeModalBtn">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="formGrid">
+          <div>
+            <label for="whoName">First name or nickname</label>
+            <input id="whoName" placeholder="e.g., Sarah" />
+          </div>
+          <div>
+            <label for="skinType">Skin type (optional)</label>
+            <input id="skinType" placeholder="e.g., dry & sensitive" />
+          </div>
+          <div style="grid-column:1/-1;">
+            <label for="productName">Product</label>
+            <input id="productName" placeholder="e.g., CeraVe Hydrating Cleanser" />
+          </div>
+          <div style="grid-column:1/-1;">
+            <label for="quote">One honest sentence — why you use it</label>
+            <textarea id="quote" placeholder="e.g., This is the only cleanser that doesn’t leave my skin tight in winter."></textarea>
+          </div>
+          <div style="grid-column:1/-1;">
+            <label for="buyLink">Buy link (optional)</label>
+            <input id="buyLink" placeholder="https://..." />
+          </div>
+        </div>
+      </div>
+      <div class="modalFooter">
+        <div class="note">
+          We only show <strong>first name/nickname</strong>. No brands, no ads, no PR.
+          <span class="warn" id="formWarn" style="display:none;">Please fill name, product, and quote.</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn ghost" id="clearAllBtn" title="Clears saved cards from this browser">Clear saved cards</button>
+          <button class="btn primary" id="saveBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cards
+    const WAITLIST_ENDPOINT = "https://script.google.com/macros/s/AKfycby-NYAfjdlZDKJW_nPqxCGjGZjX7RJifM9BjuAGl38ZaZSQNfuG_8_yn9T-YGjXYb22/exec";
+    const STORAGE_KEY = "ubpyt_cards_v2";
+
+    // Private stats + waitlist (still local-only; not shown in UI)
+    const STATS_KEY = "ubpyt_private_stats_v1"; // { discoverClicks, shareWaitClicks, shareFormOpens }
+    const WAITLIST_KEY = "ubpyt_waitlist_v1";   // [{ email, context, ts }]
+
+    const el = (id) => document.getElementById(id);
+
+    // Share modal
+    const modalBackdrop = el("modalBackdrop");
+    const openFormBtn = el("openFormBtn");
+    const closeModalBtn = el("closeModalBtn");
+    const saveBtn = el("saveBtn");
+    const clearAllBtn = el("clearAllBtn");
+    const formWarn = el("formWarn");
+
+    // Chooser buttons
+    const discoverBtn = el("discoverBtn");
+    const shareWaitBtn = el("shareWaitBtn");
+
+    // Waitlist modal
+    const waitBackdrop = el("waitBackdrop");
+    const closeWaitBtn = el("closeWaitBtn");
+    const saveWaitBtn = el("saveWaitBtn");
+    const skipWaitBtn = el("skipWaitBtn");
+    const waitEmail = el("waitEmail");
+    const waitWarn = el("waitWarn");
+    const waitOk = el("waitOk");
+    const waitContext = el("waitContext");
+
+    const cardsGrid = el("cardsGrid");
+
+    const inputs = {
+      whoName: el("whoName"),
+      skinType: el("skinType"),
+      productName: el("productName"),
+      quote: el("quote"),
+      buyLink: el("buyLink"),
+    };
+
+    let pendingWaitContext = "discover"; // or "share"
+
+    function getStats(){
+      try{
+        const raw = localStorage.getItem(STATS_KEY);
+        const base = raw ? JSON.parse(raw) : { discoverClicks:0, shareWaitClicks:0, shareFormOpens:0 };
+        return {
+          discoverClicks: Number(base.discoverClicks||0),
+          shareWaitClicks: Number(base.shareWaitClicks||0),
+          shareFormOpens: Number(base.shareFormOpens||0),
+        };
+      }catch(e){
+        return { discoverClicks:0, shareWaitClicks:0, shareFormOpens:0 };
+      }
+    }
+    function setStats(s){
+      localStorage.setItem(STATS_KEY, JSON.stringify(s));
+    }
+    function bump(which){
+      const s = getStats();
+      if(which === "discoverClicks") s.discoverClicks += 1;
+      if(which === "shareWaitClicks") s.shareWaitClicks += 1;
+      if(which === "shareFormOpens") s.shareFormOpens += 1;
+      setStats(s);
+    }
+
+    function getWaitlist(){
+      try{
+        const raw = localStorage.getItem(WAITLIST_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){
+        return [];
+      }
+    }
+    function setWaitlist(list){
+      localStorage.setItem(WAITLIST_KEY, JSON.stringify(list));
+    }
+
+    function isValidEmail(v){
+      const s = String(v || "").trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+    }
+
+    function openWaitlist(context){
+      pendingWaitContext = context;
+      waitEmail.value = "";
+      waitWarn.style.display = "none";
+      waitOk.style.display = "none";
+      waitContext.textContent = (context === "discover")
+        ? "Waiting list: discover new products"
+        : "Waiting list: share products";
+      waitBackdrop.style.display = "flex";
+      setTimeout(() => waitEmail.focus(), 50);
+    }
+    function closeWaitlist(){
+      waitBackdrop.style.display = "none";
+    }
+    function saveWaitlist(){
+      const email = waitEmail.value.trim();
+      if(!isValidEmail(email)){
+        waitWarn.style.display = "block";
+        waitOk.style.display = "none";
+        return;
+      }
+
+      // Save locally (optional)
+      const list = getWaitlist();
+      list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
+      setWaitlist(list.slice(0, 2000));
+
+      // Send to Google Sheet via Apps Script Web App
+      const payload = {
+        email,
+        context: pendingWaitContext,
+        ts: new Date().toISOString(),
+        page: window.location.href
+      };
+
+      waitWarn.style.display = "none";
+      waitOk.style.display = "none";
+
+      fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        waitOk.style.display = "block";
+      })
+      .catch(() => {
+        waitWarn.textContent = "Saved locally, but we couldn’t reach the server. Please try again.";
+        waitWarn.style.display = "block";
+      });
+    }
+      const list = getWaitlist();
+      list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
+      setWaitlist(list.slice(0, 2000));
+      waitWarn.style.display = "none";
+      waitOk.style.display = "block";
+    }
+
+    function openModal(){
+      bump("shareFormOpens");
+      modalBackdrop.style.display = "flex";
+      formWarn.style.display = "none";
+      setTimeout(() => inputs.whoName.focus(), 50);
+    }
+    function closeModal(){
+      modalBackdrop.style.display = "none";
+    }
+
+    function loadCards(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){
+        return [];
+      }
+    }
+    function saveCards(cards){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+    }
+
+
+    // Seed 3 starter cards for the MVP (only if fewer than 3 exist in this browser)
+    function ensureSeedCards(){
+      const cards = loadCards();
+
+      // Define the 3 MVP starter cards
+      const starter = [
+        {
+          whoName: "Sarah",
+          skinType: "chronically dry lips",
+          productName: "Vaseline Cocoa Butter Lip Therapy",
+          quote: "I’m baffled by Laneige either turning your lips into a desert or instantly fully rehydrating them. It’s one of my holy grails. Good ole tiny Vaseline cocoa butter lip tub is my daily driver.",
+          buyLink: "",
+          createdAt: Date.now()
+        },
+        {
+          whoName: "Reddit user",
+          skinType: "40s, dealing with discoloration / mild melasma",
+          productName: "Dr. Brenner Vitamin C Serum (C E Ferulic)",
+          quote: "I didn’t notice how much vitamin C helped until I stopped — my skin looked dull. I restarted and the brightness returned.",
+          buyLink: "",
+          createdAt: Date.now()
+        },
+        {
+          whoName: "Anonymous",
+          skinType: "dry & sensitive",
+          productName: "La Roche-Posay Cicaplast Baume B5",
+          quote: "Whenever my skin barrier is angry, this is the one product that calms it down fast.",
+          buyLink: "",
+          createdAt: Date.now()
+        }
+      ];
+
+      // If already have 3+, do nothing
+      if(cards.length >= 3) return;
+
+      // Prevent duplicates by (whoName + productName)
+      const key = (c) => (c.whoName||"") + "||" + (c.productName||"");
+      const existing = new Set(cards.map(key));
+
+      // Add missing starters until we have 3 total
+      const next = [...cards];
+      for(const c of starter){
+        if(next.length >= 3) break;
+        if(!existing.has(key(c))){
+          next.push(c);
+          existing.add(key(c));
+        }
+      }
+
+      saveCards(next.slice(0, 30));
+    }
+
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function initials(name){
+      const parts = name.trim().split(/\s+/).filter(Boolean);
+      const a = parts[0]?.[0] || "•";
+      const b = parts.length > 1 ? parts[parts.length-1][0] : "";
+      return (a + b).toUpperCase();
+    }
+
+    // Seed fixed Sarah card + keep it always first (fixed)
+    const FIXED_CARD_ID = "fixed_sarah_v1";
+    function seedFixedCard(){
+      const cards = loadCards();
+      const hasFixed = cards.some(c => c && c.__fixedId === FIXED_CARD_ID);
+      if(hasFixed) return;
+
+      const fixedCard = {
+        __fixedId: FIXED_CARD_ID,
+        whoName: "Sarah",
+        skinType: "chronically dry lips",
+        productName: "Vaseline Cocoa Butter Lip Therapy",
+        quote: "I have chronically dry lips and have tried basically everything. Good ole tiny Vaseline cocoa butter lip tub is my daily driver.",
+        buyLink: "",
+        createdAt: Date.now()
+      };
+
+      // Put fixed card first, then existing
+      saveCards([fixedCard, ...cards].slice(0, 30));
+    }
+
+    function getCardsWithFixedFirst(){
+      const cards = loadCards();
+      const fixed = cards.filter(c => c && c.__fixedId === FIXED_CARD_ID);
+      const rest = cards.filter(c => !c || c.__fixedId !== FIXED_CARD_ID);
+      return [...fixed, ...rest];
+    }
+
+    function render(){
+      const cards = getCardsWithFixedFirst();
+      cardsGrid.innerHTML = "";
+
+      if(cards.length === 0){
+        // shouldn't happen because fixed card is seeded, but keep safe
+        return;
+      }
+
+      cards.forEach((c)=> cardsGrid.appendChild(cardNode(c)));
+    }
+
+    function cardNode(c){
+      const div = document.createElement("div");
+      div.className = "card";
+
+      const safeName = escapeHtml(c.whoName || "");
+      const safeSkin = escapeHtml(c.skinType || "");
+      const safeProd = escapeHtml(c.productName || "");
+      const safeQuote = escapeHtml(c.quote || "");
+      const safeLink = escapeHtml(c.buyLink || "");
+      const isFixed = c.__fixedId === FIXED_CARD_ID;
+
+      div.innerHTML = `
+        <div class="cardTop">
+          <div class="ph" aria-hidden="true">${escapeHtml(initials(c.whoName || ""))}</div>
+          <div class="who">
+            <strong>${safeName}</strong>
+            <span>${safeSkin ? safeSkin : "Skin type not specified"}</span>
+          </div>
+        </div>
+
+        <div class="prod">
+          <div class="name">${safeProd}</div>
+          <div class="quote">${safeQuote.startsWith("“") || safeQuote.startsWith('"') ? safeQuote : "“" + safeQuote + "”"}</div>
+        </div>
+
+        <div class="cardActions">
+          <button class="linkBtn ${safeLink ? "" : "ghost"}" ${safeLink ? "" : "disabled"} data-buy="${safeLink}">
+            ${safeLink ? "Buy this product" : "Add a buy link"}
+          </button>
+          ${isFixed ? "" : `<button class="linkBtn ghost" data-remove="1">Remove</button>`}
+        </div>
+
+        <div class="muted">Personal experience. Not medical advice.</div>
+      `;
+
+      const buyBtn = div.querySelector("[data-buy]");
+      if(buyBtn){
+        buyBtn.addEventListener("click", () => {
+          const url = buyBtn.getAttribute("data-buy");
+          if(url) window.open(url, "_blank", "noopener,noreferrer");
+        });
+      }
+
+      const removeBtn = div.querySelector("[data-remove]");
+      if(removeBtn){
+        removeBtn.addEventListener("click", () => {
+          const cards = loadCards();
+          const next = cards.filter(x => !(x.whoName === c.whoName && x.productName === c.productName && x.quote === c.quote && x.__fixedId !== FIXED_CARD_ID));
+          // ensure fixed still there
+          saveCards(next.slice(0, 30));
+          seedFixedCard();
+          render();
+        });
+      }
+
+      return div;
+    }
+
+    function clearForm(){
+      Object.values(inputs).forEach(i => i.value = "");
+    }
+
+    function addCardFromForm(){
+      const whoName = inputs.whoName.value.trim();
+      const skinType = inputs.skinType.value.trim();
+      const productName = inputs.productName.value.trim();
+      const quote = inputs.quote.value.trim();
+      const buyLink = inputs.buyLink.value.trim();
+
+      if(!whoName || !productName || !quote){
+        formWarn.style.display = "inline";
+        return;
+      }
+
+      const cards = loadCards().filter(c => !(c && c.__fixedId === FIXED_CARD_ID)); // keep fixed separate
+      cards.unshift({ whoName, skinType, productName, quote, buyLink, createdAt: Date.now() });
+
+      // write back fixed + rest, capped
+      const fixed = loadCards().filter(c => c && c.__fixedId === FIXED_CARD_ID);
+      saveCards([...fixed, ...cards].slice(0, 30));
+
+      clearForm();
+      closeModal();
+      render();
+    }
+
+    // Events
+    openFormBtn.addEventListener("click", openModal);
+
+    discoverBtn.addEventListener("click", () => {
+      bump("discoverClicks");
+      openWaitlist("discover");
+    });
+
+    shareWaitBtn.addEventListener("click", () => {
+      bump("shareWaitClicks");
+      openWaitlist("share");
+    });
+
+    closeWaitBtn.addEventListener("click", closeWaitlist);
+    waitBackdrop.addEventListener("click", (e) => { if(e.target === waitBackdrop) closeWaitlist(); });
+    saveWaitBtn.addEventListener("click", saveWaitlist);
+    skipWaitBtn.addEventListener("click", closeWaitlist);
+
+    closeModalBtn.addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", (e) => { if(e.target === modalBackdrop) closeModal(); });
+    saveBtn.addEventListener("click", addCardFromForm);
+
+    clearAllBtn.addEventListener("click", () => {
+      // Clear user-added cards but keep fixed card
+      const cards = loadCards();
+      const fixed = cards.filter(c => c && c.__fixedId === FIXED_CARD_ID);
+      saveCards(fixed);
+      render();
+      closeModal();
+    });
+
+    // Init
+    seedFixedCard();
+
+    ensureSeedCards();
+    render();
+  </script>
+</body>
+</html>
