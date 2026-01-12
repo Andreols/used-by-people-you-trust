@@ -318,7 +318,6 @@
 
         <div class="ctaRow">
           <button class="btn primary" id="openFormBtn">Share a product</button>
-          <button class="btn" id="openWaitlistBtn">Get early access</button>
           <span class="pill">Only first name or nickname</span>
         </div>
 
@@ -586,41 +585,35 @@
 
 
     // Seed 3 starter cards for the MVP (only if fewer than 3 exist in this browser)
-    
     function ensureSeedCards(){
       const cards = loadCards();
-      if(cards.length > 0) return;
 
-      const starters = [
+      // Define the 3 MVP starter cards
+      const starter = [
         {
           whoName: "Sarah",
           skinType: "chronically dry lips",
           productName: "Vaseline Cocoa Butter Lip Therapy",
-          quote: "I have chronically dry lips and have tried basically everything. Good ole tiny Vaseline cocoa butter lip tub is my daily driver.",
+          quote: "I’m baffled by Laneige either turning your lips into a desert or instantly fully rehydrating them. It’s one of my holy grails. Good ole tiny Vaseline cocoa butter lip tub is my daily driver.",
           buyLink: "",
           createdAt: Date.now()
         },
         {
           whoName: "Reddit user",
-          skinType: "40s",
+          skinType: "40s, dealing with discoloration / mild melasma",
           productName: "Dr. Brenner Vitamin C Serum (C E Ferulic)",
-          quote: "I didn’t notice it until I stopped — my skin looked dull. When I restarted, the brightness came back.",
+          quote: "I didn’t notice how much vitamin C helped until I stopped — my skin looked dull. I restarted and the brightness returned.",
           buyLink: "",
           createdAt: Date.now()
         },
         {
           whoName: "Anonymous",
-          skinType: "very dry body skin",
-          productName: "Neutrogena Ultra Sensitive Cream (tub)",
-          quote: "It spreads easily and works well mixed with heavier creams when you need maximum comfort.",
+          skinType: "dry & sensitive",
+          productName: "La Roche-Posay Cicaplast Baume B5",
+          quote: "Whenever my skin barrier is angry, this is the one product that calms it down fast.",
           buyLink: "",
           createdAt: Date.now()
         }
-      ];
-
-      saveCards(starters);
-    }
-
       ];
 
       // If already have 3+, do nothing
@@ -819,98 +812,6 @@
 
     // Init
     seedFixedCard();
-
-
-    // ---- Waitlist -> Google Sheet (Apps Script) ----
-    // Paste your Apps Script Web App URL here:
-    const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
-
-    const openWaitlistBtn = document.getElementById("openWaitlistBtn");
-    const waitBackdrop = document.getElementById("waitBackdrop");
-    const closeWaitBtn = document.getElementById("closeWaitBtn");
-    const waitCancel = document.getElementById("waitCancel");
-    const waitSubmit = document.getElementById("waitSubmit");
-    const waitEmail = document.getElementById("waitEmail");
-    const waitStatus = document.getElementById("waitStatus");
-
-    function openWaitlist(){
-      if(waitStatus){
-        waitStatus.style.display = "none";
-        waitStatus.textContent = "";
-      }
-      if(waitEmail) waitEmail.value = "";
-      if(waitBackdrop) waitBackdrop.style.display = "flex";
-      setTimeout(()=>{ if(waitEmail) waitEmail.focus(); }, 50);
-    }
-    function closeWaitlist(){
-      if(waitBackdrop) waitBackdrop.style.display = "none";
-    }
-
-    if(openWaitlistBtn) openWaitlistBtn.addEventListener("click", openWaitlist);
-    if(closeWaitBtn) closeWaitBtn.addEventListener("click", closeWaitlist);
-    if(waitCancel) waitCancel.addEventListener("click", closeWaitlist);
-    if(waitBackdrop) waitBackdrop.addEventListener("click", (e)=>{ if(e.target === waitBackdrop) closeWaitlist(); });
-
-    async function submitWaitlist(){
-      const email = (waitEmail?.value || "").trim();
-      if(!email){
-        if(waitStatus){
-          waitStatus.style.display = "block";
-          waitStatus.textContent = "Please enter a valid email.";
-        }
-        return;
-      }
-      if(!WAITLIST_ENDPOINT || WAITLIST_ENDPOINT.includes("PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE")){
-        if(waitStatus){
-          waitStatus.style.display = "block";
-          waitStatus.textContent = "Missing endpoint. Paste your Apps Script Web App URL in the HTML file.";
-        }
-        return;
-      }
-
-      if(waitSubmit) waitSubmit.disabled = true;
-      if(waitStatus){
-        waitStatus.style.display = "block";
-        waitStatus.textContent = "Saving…";
-      }
-
-      try{
-        const payload = {
-          email,
-          source: "site",
-          ts: new Date().toISOString(),
-          page: window.location.href
-        };
-
-        const res = await fetch(WAITLIST_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
-
-        const text = await res.text().catch(()=> "");
-        const ok = res.ok && (!text || text.includes('"ok":true') || text.includes("ok"));
-
-        if(ok){
-          if(waitStatus) waitStatus.textContent = "Thanks — you’re on the list.";
-          setTimeout(closeWaitlist, 900);
-        }else{
-          if(waitStatus) waitStatus.textContent = "Could not save right now. Please try again.";
-        }
-      }catch(err){
-        if(waitStatus) waitStatus.textContent = "Could not save right now. Please try again.";
-      }finally{
-        if(waitSubmit) waitSubmit.disabled = false;
-      }
-    }
-
-    if(waitSubmit) waitSubmit.addEventListener("click", submitWaitlist);
-    if(waitEmail) waitEmail.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter"){
-        e.preventDefault();
-        submitWaitlist();
-      }
-    });
 
     ensureSeedCards();
     render();
