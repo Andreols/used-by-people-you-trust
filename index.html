@@ -794,8 +794,7 @@
     }
 
     // ---- Events
-    openFormBtn.addEventListener("click", openModal);
-
+if (openFormBtn) openFormBtn.addEventListener("click", openModal);
     discoverBtn.addEventListener("click", () => {
       bump("discoverClicks");
       openWaitlist("discover");
