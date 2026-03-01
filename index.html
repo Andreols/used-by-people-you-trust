@@ -31,7 +31,13 @@
                   var(--bg);
       line-height:1.45;
     }
-    a{color:inherit}
+    a{
+  color: var(--accent2);
+  text-decoration:none;
+}
+a:hover{
+  text-decoration:underline;
+}
     .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 70px}
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
