@@ -785,13 +785,13 @@ function trackBuyClick(card){
         <div class="muted">Personal experience. Not medical advice.</div>
       `;
 
-      const buyBtn = div.querySelector("[data-buy]");
-      if(buyBtn){
-        buyBtn.addEventListener("click", () => {
-          const url = buyBtn.getAttribute("data-buy");
-          if(url) window.open(url, "_blank", "noopener,noreferrer");
-        });
-      }
+const buyBtn = div.querySelector("[data-buy]");
+if(buyBtn && c.buyLink){
+  buyBtn.addEventListener("click", () => {
+    trackBuyClick(c);
+    window.open(c.buyLink, "_blank", "noopener,noreferrer");
+  });
+}
 
       const removeBtn = div.querySelector("[data-remove]");
       if(removeBtn){
