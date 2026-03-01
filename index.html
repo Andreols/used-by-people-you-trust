@@ -798,7 +798,7 @@ function trackBuyClick(card){
         </div>
         
 <div class="cardActions">
-  <button class="linkBtn ${safeLink ? "" : "ghost"}" ${safeLink ? "" : "disabled"} data-buy="1">
+  <button class="buyBtn" ${safeLink ? "" : "disabled"} data-buy="1">
     ${safeLink ? "Buy this product" : "No buy link"}
   </button>
   ${fixed ? "" : `<button class="linkBtn ghost" data-remove="1">Remove</button>`}
