@@ -458,7 +458,10 @@
     // Private stats + waitlist (local-only; not shown in UI)
     const STATS_KEY = "ubpyt_private_stats_v1"; // { discoverClicks, shareWaitClicks, shareFormOpens }
     const WAITLIST_KEY = "ubpyt_waitlist_v1";   // [{ email, context, ts }]
-
+    
+const CLICK_ENDPOINT = WAITLIST_ENDPOINT; // riuso lo stesso Apps Script
+const BUY_STATS_KEY = "ubpyt_buy_stats_v1"; // local-only fallback
+    
     // ✅ PUBLIC FIXED CARDS (everyone sees these)
     const FIXED_CARDS = [
   {
