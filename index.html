@@ -739,7 +739,41 @@ function trackBuyClick(card){
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
     }
+function getBuyStats(){
+  try{
+    const raw = localStorage.getItem(BUY_STATS_KEY);
+    return raw ? JSON.parse(raw) : { total: 0, byProduct: {} };
+  }catch(e){
+    return { total: 0, byProduct: {} };
+  }
+}
+function setBuyStats(s){
+  localStorage.setItem(BUY_STATS_KEY, JSON.stringify(s));
+}
 
+function trackBuyClick(card){
+  const s = getBuyStats();
+  s.total += 1;
+  const k = `${card.productName || "Unknown"}||${card.buyLink || ""}`;
+  s.byProduct[k] = (s.byProduct[k] || 0) + 1;
+  setBuyStats(s);
+
+  try{
+    fetch(CLICK_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        event: "buy_click",
+        product: card.productName || "",
+        who: card.whoName || "",
+        url: card.buyLink || "",
+        ts: new Date().toISOString(),
+        page: window.location.href,
+      })
+    }).catch(()=>{});
+  }catch(e){}
+}
     function initials(name){
       const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
       const a = parts[0]?.[0] || "•";
