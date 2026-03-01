@@ -774,8 +774,11 @@ function trackBuyClick(card){
           <div class="name">${safeProd}</div>
           <div class="quote">${safeQuote.startsWith("“") || safeQuote.startsWith('"') ? safeQuote : "“" + safeQuote + "”"}</div>
         </div>
-
-        <div class="cardActions">
+        
+<div class="cardActions">
+  <button class="linkBtn ${safeLink ? "" : "ghost"}" ${safeLink ? "" : "disabled"} data-buy="1">
+    ${safeLink ? "Buy this product" : "No buy link"}
+  </button>
   ${fixed ? "" : `<button class="linkBtn ghost" data-remove="1">Remove</button>`}
 </div>
 
