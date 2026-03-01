@@ -642,44 +642,7 @@ const BUY_STATS_KEY = "ubpyt_buy_stats_v1"; // local-only fallback
       waitWarn.style.display = "none";
       waitOk.style.display = "block";
     }
-function getBuyStats(){
-  try{
-    const raw = localStorage.getItem(BUY_STATS_KEY);
-    return raw ? JSON.parse(raw) : { total: 0, byProduct: {} };
-  }catch(e){
-    return { total: 0, byProduct: {} };
-  }
-}
-function setBuyStats(s){
-  localStorage.setItem(BUY_STATS_KEY, JSON.stringify(s));
-}
 
-function trackBuyClick(card){
-  // 1) local fallback stats (ti aiuta anche se il ping fallisce)
-  const s = getBuyStats();
-  s.total += 1;
-  const k = `${card.productName || "Unknown"}||${card.buyLink || ""}`;
-  s.byProduct[k] = (s.byProduct[k] || 0) + 1;
-  setBuyStats(s);
-
-  // 2) send event to Google Apps Script (real analytics)
-  try{
-    fetch(CLICK_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        event: "buy_click",
-        product: card.productName || "",
-        who: card.whoName || "",
-        url: card.buyLink || "",
-        ts: new Date().toISOString(),
-        page: window.location.href,
-        ua: navigator.userAgent
-      })
-    }).catch(()=>{});
-  }catch(e){}
-}
     // ---- Share modal
     function openModal(){
       bump("shareFormOpens");
