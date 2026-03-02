@@ -681,6 +681,25 @@ const updateEmailBtn = document.getElementById("updateEmailBtn");
         return;
       }
 
+      function saveUpdateEmail(){
+  const email = (updateEmail.value || "").trim();
+  if(!isValidEmail(email)) return;
+
+  fetch(WAITLIST_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      event: "weekly_updates_signup",
+      email,
+      ts: new Date().toISOString(),
+      page: window.location.href
+    })
+  }).catch(()=>{});
+
+  updateEmail.value = "";
+}
+      
       const list = getWaitlist();
       list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
       setWaitlist(list.slice(0, 2000));
