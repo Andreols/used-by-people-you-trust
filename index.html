@@ -680,25 +680,6 @@ const updateEmailBtn = document.getElementById("updateEmailBtn");
         waitOk.style.display = "none";
         return;
       }
-
-      function saveUpdateEmail(){
-  const email = (updateEmail.value || "").trim();
-  if(!isValidEmail(email)) return;
-
-  fetch(WAITLIST_ENDPOINT, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify({
-      event: "weekly_updates_signup",
-      email,
-      ts: new Date().toISOString(),
-      page: window.location.href
-    })
-  }).catch(()=>{});
-
-  updateEmail.value = "";
-}
       
       const list = getWaitlist();
       list.unshift({ email, context: pendingWaitContext, ts: Date.now() });
@@ -719,6 +700,25 @@ const updateEmailBtn = document.getElementById("updateEmailBtn");
       waitWarn.style.display = "none";
       waitOk.style.display = "block";
     }
+
+    function saveUpdateEmail(){
+  const email = (updateEmail.value || "").trim();
+  if(!isValidEmail(email)) return;
+
+  fetch(WAITLIST_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      event: "weekly_updates_signup",
+      email,
+      ts: new Date().toISOString(),
+      page: window.location.href
+    })
+  }).catch(()=>{});
+
+  updateEmail.value = "";
+}
 
     // ---- Share modal
     function openModal(){
