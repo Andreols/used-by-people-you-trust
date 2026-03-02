@@ -907,6 +907,10 @@ if(buyBtn && c.buyLink){
       render();
     }
 
+    if(updateEmailBtn){
+  updateEmailBtn.addEventListener("click", saveUpdateEmail);
+}
+    
     // ---- Events
 if (openFormBtn) openFormBtn.addEventListener("click", openModal);
     discoverBtn.addEventListener("click", () => {
